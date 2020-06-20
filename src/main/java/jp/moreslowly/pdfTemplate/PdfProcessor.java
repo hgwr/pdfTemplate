@@ -26,10 +26,17 @@ public class PdfProcessor {
     PdfAcroForm form = PdfAcroForm.getAcroForm(pdf, true);
 
     Map<String, String> data = (Map<String, String>) params.get("data");
-    data.forEach((k, v) -> {
-      PdfFormField tf = form.getFormFields().get(k);
-      tf.setValue(v);
-    });
+    for (Map.Entry<String, String> entry : data.entrySet()) {
+      System.out.println("Item : " + entry.getKey() + " Count : " + entry.getValue());
+      String key = entry.getKey();
+      String value = entry.getValue();
+      // System.out.printf("key: %s, value: %s", key, value);
+      Map<String, PdfFormField> formFields = form.getFormFields();
+      PdfFormField tf = formFields.get(key);
+      if (tf != null) {
+        tf.setValue(value);
+      }
+    }
 
     pdf.close();
   }
